@@ -4,7 +4,7 @@ A web app for a UK energy supplier's day-ahead trading team. It shows the **late
 generation forecast that was available when buying**, next to what wind actually generated, and measures
 **how far off the forecast was**, so the team can decide how much extra power to buy.
 
-**Live app:** `<ADD-YOUR-VERCEL-URL-HERE>`
+**Live app:** `https://qx7vrn.vercel.app`
 
 **Data:** Elexon BMRS FUELHH (actual wind output) and WINDFOR (wind forecasts), January 2026.
 
