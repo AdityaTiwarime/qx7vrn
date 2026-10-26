@@ -128,6 +128,10 @@ docs/screenshot.png      the dashboard
 
 ## Use of AI tools
 
-This project was built with help from an AI assistant (Claude, by Anthropic), used for code generation, data
-exploration and documentation. All code was run, tested and checked against the real Elexon data, and every
-number in the docs comes from `scripts/findings.py`.
+## Use of AI tools
+
+AI tools (Claude, by Anthropic) were used to assist with this project, mainly
+for code suggestions, boilerplate and documentation drafts. All code was run
+and tested against the real Elexon data; every number in the docs is
+reproducible with `backend/scripts/findings.py`, and the tests and CI checks
+in this repo verify the behaviour.
