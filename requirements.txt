@@ -1,0 +1,4 @@
+# Python dependencies for the Vercel function (api/index.py). Docker uses backend/requirements.txt.
+fastapi==0.115.6
+pandas==2.2.3
+tzdata==2025.2

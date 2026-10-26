@@ -1,0 +1,51 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - run: ruff check . && ruff format --check .
+      - run: pytest -q
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: [backend, frontend]
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose up --build -d --wait
+      - name: Smoke test through nginx
+        run: |
+          curl -fsS localhost:8080/ | grep -q "Wind Forecast Monitor"
+          curl -fsS "localhost:8080/api/accuracy?mode=cutoff&cutoff=10:00" | python3 -c "import json,sys; m=json.load(sys.stdin)['metrics']; assert m['n']==744, m; print('ok', m['mae'])"
+      - if: failure()
+        run: docker compose logs
